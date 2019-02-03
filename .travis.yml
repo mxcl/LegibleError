@@ -1,0 +1,68 @@
+# only run for: merge commits, releases and pull-requests
+if: type != push OR branch = master OR branch =~ /^\d+\.\d+(\.\d+)?(-\S*)?$/
+
+os: osx
+osx_image: xcode10.1
+language: swift
+xcode_project: LegibleError.xcodeproj
+xcode_scheme: LegibleError-Package
+
+jobs:
+  include:
+    - stage: pretest
+      name: Check Linux tests are sync’d
+      install: swift test --generate-linuxmain
+      script: git diff --exit-code
+
+    - name: macOS / Swift 4.2.1 (Xcode 10.1)
+      stage: test
+      script: swift test
+      after_success: bash <(curl -s https://codecov.io/bash)
+
+    - &xcodebuild
+      before_install: swift package generate-xcodeproj --enable-code-coverage
+      xcode_destination: platform=iOS Simulator,OS=latest,name=iPhone SE
+      name: iOS / Swift 4.2.1
+      after_success: bash <(curl -s https://codecov.io/bash)
+    - <<: *xcodebuild
+      xcode_destination: platform=tvOS Simulator,OS=latest,name=Apple TV
+      name: tvOS / Swift 4.2.1
+
+    - &linux
+      name: Linux / Swift 4.2.1
+      env: SWIFT_VERSION=4.2.1
+      os: linux
+      language: generic
+      sudo: false
+      install: eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
+      script: swift test
+
+    - <<: *linux
+      env: SWIFT_VERSION='5.0-DEVELOPMENT-SNAPSHOT-2019-01-29-a'
+      name: Linux / Swift 5.0.0-dev (2019-01-29)
+
+    - stage: deploy
+      if: branch =~ ^\d+\.\d+\.\d+$
+      name: CocoaPods
+      before_install: export TRAVIS_REPO_NAME=${TRAVIS_REPO_SLUG#*/}
+      install: gem install cocoapods --pre
+      before_script: |
+        cat <<\ \ EOF> $TRAVIS_REPO_NAME.podspec
+        Pod::Spec.new do |s|
+          s.name = ENV['TRAVIS_REPO_NAME']
+          s.version = ENV['TRAVIS_TAG']
+          s.summary = 'User-friendly, debug-helping, legible error strings.'
+          s.homepage = "https://github.com/#{ENV['TRAVIS_REPO_SLUG']}"
+          s.license = { :type => 'Unlicense', :file => 'LICENSE' }
+          s.author = { 'mxcl' => 'mxcl@me.com' }
+          s.source = { git: "https://github.com/#{ENV['TRAVIS_REPO_SLUG']}.git", tag: s.version }
+          s.social_media_url = 'https://twitter.com/mxcl'
+          s.osx.deployment_target = '10.10'
+          s.ios.deployment_target = '8.0'
+          s.tvos.deployment_target = '10.0'
+          s.watchos.deployment_target = '2.0'
+          s.source_files = 'Sources/*'
+          s.swift_version = '4.2'
+        end
+        EOF
+      script: pod trunk push
