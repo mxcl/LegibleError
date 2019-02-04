@@ -7,6 +7,7 @@ let theOperationCouldNotBeCompleted = "The operation couldn’t be completed."
 #endif
 
 extension Error {
+    /// - Returns: A fully qualified representation of this error.
     public var legibleDescription: String {
         switch errorType {
         case .swiftError(.enum?), .swiftLocalizedError(_, .enum?):
@@ -25,6 +26,7 @@ extension Error {
         }
     }
 
+    /// - Returns: A fully qualified, user-visible representation of this error.
     public var legibleLocalizedDescription: String {
         switch errorType {
         case .swiftError:
