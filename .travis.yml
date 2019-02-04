@@ -63,6 +63,7 @@ jobs:
           s.watchos.deployment_target = '2.0'
           s.source_files = 'Sources/*'
           s.swift_version = '4.2'
+          s.static_framework = true
         end
         EOF
       script: pod trunk push
