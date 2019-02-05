@@ -51,7 +51,7 @@ jobs:
         Pod::Spec.new do |s|
           s.name = ENV['TRAVIS_REPO_NAME']
           s.version = ENV['TRAVIS_TAG']
-          s.summary = 'User-friendly, debug-helping, legible error strings.'
+          s.summary = 'Beating `Error.localizedDescription` at its own game.'
           s.homepage = "https://github.com/#{ENV['TRAVIS_REPO_SLUG']}"
           s.license = { :type => 'Unlicense', :file => 'LICENSE' }
           s.author = { 'mxcl' => 'mxcl@me.com' }

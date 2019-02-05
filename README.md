@@ -1,21 +1,18 @@
-![Masthead](../gh-pages/masthead.jpg)
-
 ## LegibleError ![badge-platforms][] ![badge-languages][] [![badge-ci][]][travis] [![badge-codecov][]][codecov] [![badge-version][]][cocoapods]
 
-You *should* make all your `Error`s [`LocalizedError`], but this often feels
-tedious; some errors are quite unlikely and you’ve already added all the context
-you would need from a bug report in the associated value of the enum’s case
-value.
-
-But it’s more frustrating when an error from a third-party dependency doesn’t
-implement `LocalizedError` and your bug-report contains a screenshot that says
-something like this:
+LegibleError’s goal is to prevent you showing the user a string like this:
 
 > The operation couldn’t be completed. (ThirdPartyModule.(unknown context at 0xx10d6b4a44).SomeError error 0.)
 
-## Making those error messages legible
+That string is the default `localizedDescription` for a Swift `Error`. Instead use LegibleError and you’ll get something more like this:
 
-If you have an error like this:
+> The operation couldn’t be completed. (ThirdPartyModule.SomeError.networkFailure)
+
+![Masthead](../gh-pages/masthead.jpg)
+
+## `Error.legibleLocalizedDescription`
+
+If you have an `Error` like this:
 
 ```swift
 enum SystemError: Error {
@@ -30,13 +27,11 @@ alert.message = error.localizedDescription
 present(alert)
 ```
 
-The user is presented with:
+The alert will show:
 
 > The operation couldn’t be completed. (MyModule.(unknown context at 0xx10d6b4a44).SystemError error 0.)
 
-**Frustrating**.
-
-So let’s use `.legibleLocalizedDescription`:
+But if we were to use `.legibleLocalizedDescription`:
 
 ```swift
 import LegibleError
@@ -46,14 +41,15 @@ alert.message = error.legibleLocalizedDescription
 present(alert)
 ```
 
-The user is presented with:
+The alert will show:
 
 > The operation couldn’t be completed. (SystemError.databaseFailure(internalCode: 34))
 
 Still not great, but way more useful in a bug report.
 
-Of course if you implement `LocalizedError`, `legibleLocalizedDescription`
-returns that:
+If you want a great message, implement `LocalizedError` this will make both
+`localizedDescription` **and** `legibleLocalizedDescription` return the string
+you specify:
 
 ```swift
 enum SystemError: LocalizedError {
@@ -68,11 +64,21 @@ enum SystemError: LocalizedError {
 }
 ```
 
-Presents the user with:
+The alert will show:
 
 > A serious database failure occurred. Contact support. (#34)
 
-### Debuggable Error Descriptions
+---
+
+LegibleError exists because:
+
+1. You have no control over third parties and cannot force them to implement
+    `LocalizedError`
+2. Some Errors in your codebase are very unlikely and thus “localizing” them is
+    not a good maintenance burden.
+3. When logging errors you want the full information without any risk that the localized version has “fallen behind”, get the compiler to do the work, in such cases use `legibleDescription` (see the next section).
+
+## Loggable Error Descriptions
 
 This:
 
@@ -96,6 +102,11 @@ let msg = "There was an error! \(error.legibleDescription)"
 to `localizedDescription`. `legibleDescription` is always appropriate for
 communicating to *you*, the developer, which error happened. Use it in logs and
 to supplement a good message for the user.
+
+## Way better descriptions on Linux
+
+Linux is a little behind, usually you only get `The operation could not be
+completed` on Linux. We fully support Linux.
 
 # Supporting mxcl
 
