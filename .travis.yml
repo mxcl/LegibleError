@@ -17,7 +17,6 @@ jobs:
     - name: macOS / Swift 4.2.1 (Xcode 10.1)
       stage: test
       script: swift test
-      after_success: bash <(curl -s https://codecov.io/bash)
 
     - &xcodebuild
       before_install: swift package generate-xcodeproj --enable-code-coverage
@@ -38,14 +37,15 @@ jobs:
       script: swift test
 
     - <<: *linux
-      env: SWIFT_VERSION='5.0-DEVELOPMENT-SNAPSHOT-2019-01-29-a'
-      name: Linux / Swift 5.0.0-dev (2019-01-29)
+      env: SWIFT_VERSION='5.0-DEVELOPMENT-SNAPSHOT-2019-02-05-a'
+      name: Linux / Swift 5.0.0-dev (2019-02-05)
+      script: swift test --enable-code-coverage
 
     - stage: deploy
       if: branch =~ ^\d+\.\d+\.\d+$
       name: CocoaPods
       before_install: export TRAVIS_REPO_NAME=${TRAVIS_REPO_SLUG#*/}
-      install: gem install cocoapods --pre
+      install: gem install cocoapods
       before_script: |
         cat <<\ \ EOF> $TRAVIS_REPO_NAME.podspec
         Pod::Spec.new do |s|
