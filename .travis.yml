@@ -14,18 +14,31 @@ jobs:
       install: swift test --generate-linuxmain
       script: git diff --exit-code
 
-    - name: macOS / Swift 4.2.1 (Xcode 10.1)
+    - name: macOS / Swift 4.0.3
       stage: test
-      script: swift test
+      script: swift test --parallel -Xswiftc -swift-version -Xswiftc 4
+
+    - name: macOS / Swift 4.2.1
+      script: swift test --parallel
+
+    - name: macOS / Swift 5.0
+      osx_image: xcode10.2
+      script: swift test --parallel
 
     - &xcodebuild
       before_install: swift package generate-xcodeproj --enable-code-coverage
-      xcode_destination: platform=iOS Simulator,OS=latest,name=iPhone SE
+      xcode_destination: 'platform=iOS Simulator,OS=latest,name=iPhone SE'
       name: iOS / Swift 4.2.1
       after_success: bash <(curl -s https://codecov.io/bash)
+
     - <<: *xcodebuild
-      xcode_destination: platform=tvOS Simulator,OS=latest,name=Apple TV
+      xcode_destination: 'platform=tvOS Simulator,OS=latest,name=Apple TV'
       name: tvOS / Swift 4.2.1
+
+    - <<: *xcodebuild
+      osx_image: xcode10.2
+      xcode_destination: 'platform=macOS'
+      name: macOS / Swift 5.0.0
 
     - &linux
       name: Linux / Swift 4.2.1
@@ -44,26 +57,10 @@ jobs:
     - stage: deploy
       if: branch =~ ^\d+\.\d+\.\d+$
       name: CocoaPods
-      before_install: export TRAVIS_REPO_NAME=${TRAVIS_REPO_SLUG#*/}
-      install: gem install cocoapods
-      before_script: |
-        cat <<\ \ EOF> $TRAVIS_REPO_NAME.podspec
-        Pod::Spec.new do |s|
-          s.name = ENV['TRAVIS_REPO_NAME']
-          s.version = ENV['TRAVIS_TAG']
-          s.summary = 'Beating `Error.localizedDescription` at its own game.'
-          s.homepage = "https://github.com/#{ENV['TRAVIS_REPO_SLUG']}"
-          s.license = { :type => 'Unlicense', :file => 'LICENSE' }
-          s.author = { 'mxcl' => 'mxcl@me.com' }
-          s.source = { git: "https://github.com/#{ENV['TRAVIS_REPO_SLUG']}.git", tag: s.version }
-          s.social_media_url = 'https://twitter.com/mxcl'
-          s.osx.deployment_target = '10.10'
-          s.ios.deployment_target = '8.0'
-          s.tvos.deployment_target = '10.0'
-          s.watchos.deployment_target = '2.0'
-          s.source_files = 'Sources/*'
-          s.swift_version = '4.2'
-          s.static_framework = true
-        end
-        EOF
+      before_install: |
+        curl -O https://raw.githubusercontent.com/mxcl/Path.swift/master/.github/deploy
+        chmod u+x deploy
+      install: brew install mxcl/made/swift-sh
+      before_script: ./deploy generate-podspec
       script: pod trunk push
+      after_success: ./deploy publish-release

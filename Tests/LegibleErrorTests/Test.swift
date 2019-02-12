@@ -19,8 +19,11 @@ class Test: XCTestCase {
     #if !os(Linux)
         // tests that Swift itself hasn't improved each release
         // on Linux localizedDescription crashes: https://bugs.swift.org/browse/SR-2476
-
+    #if swift(>=5)
+        XCTAssertMatches(Foo.a.localizedDescription, "^" + theOperationCouldNotBeCompleted + #" \(LegibleErrorTests\.Test\.\(unknown context at \$.+\)\.\(unknown context at \$.+\)\.Foo error 0\.\)$"#)
+    #else
         XCTAssertMatches(Foo.a.localizedDescription, "^\(theOperationCouldNotBeCompleted) \\(LegibleErrorTests\\.\\(unknown context at 0x.+\\)\\.Foo error 0\\.\\)$")
+    #endif
     #endif
         XCTAssertEqual(String(describing: Foo.a), "a")
     }
@@ -34,8 +37,13 @@ class Test: XCTestCase {
         XCTAssertEqual(Foo().legibleLocalizedDescription, "\(theOperationCouldNotBeCompleted) (Foo(a: \"a\"))")
 
     #if !os(Linux)
-        // tests that Swift itself hasn't changed each release
+        // tests that Swift itself hasn't improved each release
+        // on Linux localizedDescription crashes: https://bugs.swift.org/browse/SR-2476
+    #if swift(>=5)
+        XCTAssertMatches(Foo().localizedDescription, "^" + theOperationCouldNotBeCompleted + #" \(LegibleErrorTests\.Test\.\(unknown context at \$.+\)\.\(unknown context at \$.+\)\.Foo error 1\.\)$"#)
+    #else
         XCTAssertMatches(Foo().localizedDescription, "^\(theOperationCouldNotBeCompleted) \\(LegibleErrorTests\\.\\(unknown context at 0x.+\\)\\.Foo error 1\\.\\)$")
+    #endif
         XCTAssertEqual(String(describing: Foo()), "Foo(a: \"a\")")
     #endif
     }
@@ -50,8 +58,14 @@ class Test: XCTestCase {
 
     #if !os(Linux)
         // tests that Swift itself hasn't improved each release
+        // on Linux localizedDescription crashes: https://bugs.swift.org/browse/SR-2476
+    #if swift(>=5)
+        XCTAssertMatches(Foo().localizedDescription, "^" + theOperationCouldNotBeCompleted + #" \(LegibleErrorTests\.Test\.\(unknown context at \$.+\)\.\(unknown context at \$.+\)\.Foo error 1\.\)$"#)
+        XCTAssertMatches(String(describing: Foo()), "LegibleErrorTests\\.Test\\.\\(unknown context at \\$.+\\)\\.\\(unknown context at \\$.+\\)\\.Foo")
+    #else
         XCTAssertMatches(Foo().localizedDescription, "^\(theOperationCouldNotBeCompleted) \\(LegibleErrorTests\\.\\(unknown context at 0x.+\\)\\.Foo error 1\\.\\)$")
         XCTAssertMatches(String(describing: Foo()), "LegibleErrorTests\\.\\(unknown context at 0x.+\\)\\.Foo")
+    #endif
     #endif
     }
 
@@ -65,7 +79,12 @@ class Test: XCTestCase {
 
     #if !os(Linux)
         // tests that Swift itself hasn't improved each release
+        // on Linux localizedDescription crashes: https://bugs.swift.org/browse/SR-2476
+    #if swift(>=5)
+        XCTAssertMatches(Foo.a.localizedDescription, "^" + theOperationCouldNotBeCompleted + #" \(LegibleErrorTests\.Test\.\(unknown context at \$.+\)\.\(unknown context at \$.+\)\.Foo error 0\.\)$"#)
+    #else
         XCTAssertMatches(Foo.a.localizedDescription, "^\(theOperationCouldNotBeCompleted) \\(LegibleErrorTests\\.\\(unknown context at 0x.+\\)\\.Foo error 0\\.\\)$")
+    #endif
         XCTAssertEqual(String(describing: Foo.a), "a")
     #endif
     }
@@ -84,6 +103,7 @@ class Test: XCTestCase {
 
     #if !os(Linux)
         // tests that Swift itself hasn't improved each release
+        // on Linux localizedDescription crashes: https://bugs.swift.org/browse/SR-2476
         XCTAssertEqual(Foo.a.localizedDescription, "Foobar")
         XCTAssertEqual(String(describing: Foo.a), "a")
     #endif
@@ -99,7 +119,12 @@ class Test: XCTestCase {
 
     #if !os(Linux)
         // tests that Swift itself hasn't improved each release
+        // on Linux localizedDescription crashes: https://bugs.swift.org/browse/SR-2476
+    #if swift(>=5)
+        XCTAssertMatches(Foo().localizedDescription, "^" + theOperationCouldNotBeCompleted + #" \(LegibleErrorTests\.Test\.\(unknown context at \$.+\)\.\(unknown context at \$.+\)\.Foo error 1\.\)$"#)
+    #else
         XCTAssertMatches(Foo().localizedDescription, "^\(theOperationCouldNotBeCompleted) \\(LegibleErrorTests\\.\\(unknown context at 0x.+\\)\\.Foo error 1\\.\\)$")
+    #endif
         XCTAssertEqual(String(describing: Foo()), "Foo(a: \"a\")")
     #endif
     }
@@ -117,7 +142,8 @@ class Test: XCTestCase {
         XCTAssertEqual(Foo().legibleLocalizedDescription, "Foobar")
 
     #if !os(Linux)
-        // tests that Swift itself hasn't changed each release
+        // tests that Swift itself hasn't improved each release
+        // on Linux localizedDescription crashes: https://bugs.swift.org/browse/SR-2476
         XCTAssertEqual(Foo().localizedDescription, "Foobar")
         XCTAssertEqual(String(describing: Foo()), "Foo(a: \"a\")")
     #endif
@@ -133,8 +159,14 @@ class Test: XCTestCase {
 
     #if !os(Linux)
         // tests that Swift itself hasn't improved each release
+        // on Linux localizedDescription crashes: https://bugs.swift.org/browse/SR-2476
+    #if swift(>=5)
+        XCTAssertMatches(Foo().localizedDescription, "^" + theOperationCouldNotBeCompleted + #" \(LegibleErrorTests\.Test\.\(unknown context at \$.+\)\.\(unknown context at \$.+\)\.Foo error 1\.\)$"#)
+        XCTAssertMatches(String(describing: Foo()), "LegibleErrorTests\\.Test\\.\\(unknown context at \\$.+\\)\\.\\(unknown context at \\$.+\\)\\.Foo")
+    #else
         XCTAssertMatches(Foo().localizedDescription, "^\(theOperationCouldNotBeCompleted) \\(LegibleErrorTests\\.\\(unknown context at 0x.+\\)\\.Foo error 1\\.\\)$")
         XCTAssertMatches(String(describing: Foo()), "LegibleErrorTests\\.\\(unknown context at 0x.+\\)\\.Foo")
+    #endif
     #endif
     }
 
