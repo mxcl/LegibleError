@@ -4,11 +4,10 @@ LegibleError’s goal is to prevent you showing the user a string like this:
 
 > The operation couldn’t be completed. (ThirdPartyModule.(unknown context at 0xx10d6b4a44).SomeError error 0.)
 
-That string is the default `localizedDescription` for a Swift `Error`. Instead use LegibleError and you’ll get something more like this:
+That string is the default `localizedDescription` for a Swift `Error`. Instead
+use LegibleError and you’ll get something more like this:
 
-> The operation couldn’t be completed. (ThirdPartyModule.SomeError.networkFailure)
-
-![Masthead](../gh-pages/masthead.jpg)
+> The operation couldn’t be completed. (ThirdPartyModule.SomeError.networkFailure(http: 503))
 
 ## `Error.legibleLocalizedDescription`
 
@@ -76,7 +75,9 @@ LegibleError exists because:
     `LocalizedError`
 2. Some Errors in your codebase are very unlikely and thus “localizing” them is
     not a good maintenance burden.
-3. When logging errors you want the full information without any risk that the localized version has “fallen behind”, get the compiler to do the work, in such cases use `legibleDescription` (see the next section).
+3. When logging errors you want the full information without any risk that the
+    localized version has “fallen behind”, get the compiler to do the work, in
+    such cases use `legibleDescription` (see the next section).
 
 ## Loggable Error Descriptions
 
@@ -96,7 +97,7 @@ Which loses the context of the enum’s type; use `legibleDescription`:
 let msg = "There was an error! \(error.legibleDescription)"
 ```
 
-> There was an error (SystemError.databaseFailure)
+> There was an error (SystemError.databaseFailure(internalCode: 34))
 
 `legibleDescription` is to `description` where `legibleLocalizedDescription` is
 to `localizedDescription`. `legibleDescription` is always appropriate for
@@ -119,7 +120,7 @@ help me continue my work, I appreciate it x
 	<img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
 </a>
 
-[Other donation/tipping options](http://mxcl.github.io/donate/)
+[Other donation/tipping options](http://mxcl.dev/#donate)
 
 ## Installation
 
