@@ -21,7 +21,7 @@ jobs:
     - name: macOS / Swift 4.2.1
       script: swift test --parallel
 
-    - name: macOS / Swift 5.0
+    - name: macOS / Swift 5.0.0
       osx_image: xcode10.2
       script: swift test --parallel
 
@@ -50,8 +50,8 @@ jobs:
       script: swift test
 
     - <<: *linux
-      env: SWIFT_VERSION='5.0-DEVELOPMENT-SNAPSHOT-2019-02-05-a'
-      name: Linux / Swift 5.0.0-dev (2019-02-05)
+      env: SWIFT_VERSION='5.0'
+      name: Linux / Swift 5.0.0
       script: swift test --enable-code-coverage
 
     - stage: deploy
