@@ -25,6 +25,10 @@ jobs:
       osx_image: xcode10.2
       script: swift test --parallel
 
+    - name: macOS / Swift 5.1.0
+      osx_image: xcode11
+      script: swift test --parallel
+
     - &xcodebuild
       before_install: swift package generate-xcodeproj --enable-code-coverage
       xcode_destination: 'platform=iOS Simulator,OS=latest,name=iPhone SE'
@@ -39,6 +43,11 @@ jobs:
       osx_image: xcode10.2
       xcode_destination: 'platform=macOS'
       name: macOS / Swift 5.0.0
+
+    - <<: *xcodebuild
+      osx_image: xcode11
+      xcode_destination: 'platform=macOS'
+      name: macOS / Swift 5.1.0
 
     - &linux
       name: Linux / Swift 4.2.1
