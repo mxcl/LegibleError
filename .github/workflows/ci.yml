@@ -33,7 +33,7 @@ jobs:
         path: .build
         key: macOS-${{ matrix.xcode }}
         restore-keys: macOS-
-    - run: swift test
+    - run: swift test --parallel -Xswiftc -warnings-as-errors
       env:
         DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app
   linux:
@@ -57,4 +57,4 @@ jobs:
       # if: ${{ matrix.swift != '5.2.4' }}
       with:
         swift-version: ${{ matrix.swift }}
-    - run: swift test
+    - run: swift test --parallel -Xswiftc -warnings-as-errors

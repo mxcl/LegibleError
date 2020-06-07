@@ -11,10 +11,10 @@ jobs:
   include:
     - name: macOS / Swift 4.0.3 (Xcode 10.1)
       stage: test
-      script: swift test --parallel -Xswiftc -swift-version -Xswiftc 4
+      script: swift test --parallel -Xswiftc -swift-version -Xswiftc 4 -Xswiftc -warnings-as-errors
 
     - name: macOS / Swift 4.2.1 (Xcode 10.1)
-      script: swift test --parallel
+      script: swift test --parallel -Xswiftc -warnings-as-errors
 
     - name: macOS / Swift 5.0.1 (Xcode 10.2)
-      script: swift test --parallel
+      script: swift test --parallel  -Xswiftc -warnings-as-errors

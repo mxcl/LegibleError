@@ -55,7 +55,8 @@ extension Error {
 
     private var errorType: ErrorType {
       #if os(Linux)
-        let isNSError = self is NSError
+        // without the `as Any` noop this generates an (incorrect) warning
+        let isNSError = self as Any is NSError
       #else
         let foo: Any = self
         let nativeClassNames = ["_SwiftNativeNSError", "__SwiftNativeNSError"]
