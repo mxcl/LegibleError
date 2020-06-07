@@ -54,7 +54,9 @@ extension Error {
         let isNSError = self is NSError
       #else
         let foo: Any = self
-        let isNSError = String(cString: object_getClassName(self)) != "_SwiftNativeNSError" && foo is NSObject
+        let nativeClassNames = ["_SwiftNativeNSError", "__SwiftNativeNSError"]
+        let selfClassName = String(cString: object_getClassName(self))
+        let isNSError = !nativeClassNames.contains(selfClassName) && foo is NSObject
         // ^^ ∵ otherwise implicit bridging implicitly casts as for other tests
       #endif
 
