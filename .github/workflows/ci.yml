@@ -54,7 +54,7 @@ jobs:
         key: swift-${{ matrix.swift }}
         restore-keys: swift-
     - uses: YOCKOW/Action-setup-swift@master
-      # if: ${{ matrix.swift != '5.2.4' }}
+      if: ${{ matrix.swift != '5.2.4' }}
       with:
         swift-version: ${{ matrix.swift }}
     - run: swift test --parallel -Xswiftc -warnings-as-errors
