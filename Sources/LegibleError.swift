@@ -1,7 +1,11 @@
 import Foundation
 
 #if os(Linux)
+#if swift(>=5.1)
+let theOperationCouldNotBeCompleted = "The operation could not be completed."
+#else
 let theOperationCouldNotBeCompleted = "The operation could not be completed"
+#endif
 #else
 let theOperationCouldNotBeCompleted = "The operation couldn’t be completed."
 #endif

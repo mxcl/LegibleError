@@ -28,3 +28,9 @@ public func testCase<T: XCTestCase>(_ allTests: [(String, (T) -> () -> Void)]) -
     fatalError()
 }
 #endif
+
+#if swift(>=5)
+let addressPattern = "0x.?+"
+#else
+let addressPattern = "\\$.?+"
+#endif
