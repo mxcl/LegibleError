@@ -45,23 +45,6 @@ jobs:
         export VERSION=$(echo $TRAVIS_TAG | cut -c 8-)
         git push origin :$VERSION
 
-    - stage: publish
-      name: Jazzy
-      osx_image: xcode11
-      install: gem install jazzy
-      before_script: swift package generate-xcodeproj
-      script: |
-        jazzy --config .github/jazzy.yml \
-              --module-version $TRAVIS_TAG \
-              --github_url "https://github.com/$TRAVIS_REPO_SLUG"
-      deploy:
-        provider: pages
-        skip-cleanup: true
-        github-token: $GITHUB_TOKEN
-        local-dir: output
-        on:
-          tags: true
-
     - name: CocoaPods
       env: HOMEBREW_NO_INSTALL_CLEANUP=1
       osx_image: xcode11

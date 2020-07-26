@@ -1,4 +1,4 @@
-## LegibleError ![badge-platforms][] ![badge-languages][] [![badge-ci][]][travis] [![badge-codecov][]][codecov] [![badge-version][]][cocoapods]
+## LegibleError ![badge-platforms][] ![badge-languages][] [![badge-ci][]][gha] [![badge-codecov][]][codecov] [![badge-version][]][cocoapods]
 
 LegibleError’s goal is to prevent you showing the user a string like this:
 
@@ -142,12 +142,12 @@ Carthage:
 
 
 [badge-platforms]: https://img.shields.io/badge/platforms-macOS%20%7C%20Linux%20%7C%20iOS%20%7C%20tvOS%20%7C%20watchOS-lightgrey.svg
-[badge-languages]: https://img.shields.io/badge/swift-4.2%20%7C%205.0-orange.svg
+[badge-languages]: https://img.shields.io/badge/swift-4.2%20%7C%205.0%20%7C%205.1%20%7C%205.2%20%7C%205.3-orange.svg
 [badge-codecov]: https://codecov.io/gh/mxcl/LegibleError/branch/master/graph/badge.svg
 [badge-version]: https://img.shields.io/cocoapods/v/LegibleError.svg?label=version
-[badge-ci]: https://travis-ci.com/mxcl/LegibleError.svg
+[badge-ci]: https://github.com/mxcl/LegibleError/workflows/Checks/badge.svg
 
-[travis]: https://travis-ci.com/mxcl/LegibleError
+[gha]: https://github.com/mxcl/LegibleError/actions
 [codecov]: https://codecov.io/gh/mxcl/LegibleError
 [cocoapods]: https://cocoapods.org/pods/LegibleError
 
