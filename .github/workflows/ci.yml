@@ -22,20 +22,18 @@ jobs:
     strategy:
       matrix:
         xcode:
-      # - 10.3  # doesn’t work here, so we still use Travis for that
-        - 11.3.1  # Swift 5.1.3
-        - 11.5    # Swift 5.2.4
-    runs-on: macos-latest
+      # -  10.3  # Swift 5.0 (doesn’t work on GHA macOS image :-/)
+        -  11.3  # Swift 5.1
+        - ^11.4  # Swift 5.2
+        - ^12    # Swift 5.3
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/cache@v1
+    - name: setup-xcode
+      uses: maxim-lobanov/setup-xcode@1.0
       with:
-        path: .build
-        key: macOS-${{ matrix.xcode }}
-        restore-keys: macOS-
+        xcode-version: ${{ matrix.xcode }}
+    - run: swift --version
     - run: swift test --parallel -Xswiftc -warnings-as-errors
-      env:
-        DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app
   linux:
     needs: smoke
     runs-on: ubuntu-latest

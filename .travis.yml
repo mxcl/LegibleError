@@ -9,6 +9,7 @@ xcode_scheme: LegibleError-Package
 
 stages:
   - name: test
+    if: !(branch =~ /^\d+\.\d+\.\d+(-.*)?$/)
   - name: deploy
     if: branch =~ /^deploy-\d+\.\d+\.\d+(-.*)?$/
   - name: publish
