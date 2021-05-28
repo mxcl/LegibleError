@@ -53,7 +53,7 @@ you specify:
 ```swift
 enum SystemError: LocalizedError {
     case databaseFailure
-    
+
     var errorDescription: String? {
         switch self {
         case databaseFailure(let code):
@@ -109,18 +109,10 @@ to supplement a good message for the user.
 Linux is a little behind, usually you only get `The operation could not be
 completed` on Linux. We fully support Linux.
 
-# Supporting mxcl
+# Sponsorship
 
-Hi, I’m Max Howell and I have written a lot of open source software, and
-probably you already use some of it (Homebrew anyone?). I work full-time on
-open source and it’s hard; currently I earn *less* than minimum wage. Please
-help me continue my work, I appreciate it x
-
-<a href="https://www.patreon.com/mxcl">
-	<img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160">
-</a>
-
-[Other donation/tipping options](http://mxcl.dev/#donate)
+If you or your company depend on this project, please consider [sponsorship] so
+I have justification for maintenance .
 
 ## Installation
 
@@ -153,3 +145,4 @@ Carthage:
 
 [`LocalizedError`]: https://developer.apple.com/documentation/foundation/localizederror
 [@Carthage#1945]: https://github.com/Carthage/Carthage/pull/1945
+[sponsorship]: https://github.com/sponsors/mxcl
