@@ -134,7 +134,7 @@ Carthage:
 
 
 [badge-platforms]: https://img.shields.io/badge/platforms-macOS%20%7C%20Linux%20%7C%20iOS%20%7C%20tvOS%20%7C%20watchOS-lightgrey.svg
-[badge-languages]: https://img.shields.io/badge/swift-4.2%20%7C%205.0%20%7C%205.1%20%7C%205.2%20%7C%205.3-orange.svg
+[badge-languages]: https://img.shields.io/badge/swift-4.2%20%7C%205.x-orange.svg
 [badge-codecov]: https://codecov.io/gh/mxcl/LegibleError/branch/master/graph/badge.svg
 [badge-version]: https://img.shields.io/cocoapods/v/LegibleError.svg?label=version
 [badge-ci]: https://github.com/mxcl/LegibleError/workflows/Checks/badge.svg
