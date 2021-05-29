@@ -1,13 +1,12 @@
-name: CI
-on: [pull_request]
+on:
+  pull_request:
+    paths:
+      - Sources/**
+      - Tests/**
+      - .github/workflows/ci.yml
+  schedule:
+    - cron: '3 3 * * 2'  # 3:03 AM, every Tuesday
 jobs:
-  smoke:
-    runs-on: macos-latest
-    steps:
-    - uses: technote-space/auto-cancel-redundant-job@v1
-    - uses: actions/checkout@v2
-    - run: swift test --generate-linuxmain
-    - run: git diff --exit-code
   macOS:
     runs-on: macos-10.15
     strategy:
@@ -25,17 +24,21 @@ jobs:
       with:
         xcode-version: ${{ matrix.xcode }}
     - run: swift test --parallel -Xswiftc -warnings-as-errors
+    - run: |
+        swift test --generate-linuxmain
+        git diff --exit-code
+      if: ${{ matrix.xcode == '12.4' }}
   linux:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         swift:
-        - 4.2.1
-        - 5.0.3
-        - 5.1.5
-        - 5.2.5
-        - 5.3.3
-        - 5.4.1
+        - '4.2'
+        - '5.0'
+        - '5.1'
+        - '5.2'
+        - '5.3'
+        - '5.4'
     container:
       image: swift:${{ matrix.swift }}
     steps:

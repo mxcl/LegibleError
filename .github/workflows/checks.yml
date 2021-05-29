@@ -1,12 +1,11 @@
-name: Checks
-on: 
+on:
   push:
     branches:
-    - master
+      - master
 jobs:
   macOS:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - run: swift --version
-    - run: swift test
+      - uses: actions/checkout@v2
+      - run: swift --version
+      - run: swift test --parallel
