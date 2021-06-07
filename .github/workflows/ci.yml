@@ -8,22 +8,23 @@ on:
     - cron: '3 3 * * 2'  # 3:03 AM, every Tuesday
 jobs:
   macOS:
-    runs-on: macos-10.15
+    runs-on: macos-latest
     strategy:
       matrix:
         xcode:
-      # -  10.3  # Swift 5.0  # fails mysteriously
+        -  10.3  # Swift 5.0
         -  11.3  # Swift 5.1
         - ^11.4  # Swift 5.2
         -  12.4  # Swift 5.3
-      # -  12.5  # Swift 5.4  # not yet available
+        - ^12.5  # Swift 5.4
     steps:
     - uses: actions/checkout@v2
-    - name: setup-xcode
-      uses: maxim-lobanov/setup-xcode@v1
+    - uses: mxcl/xcodebuild@v1
       with:
-        xcode-version: ${{ matrix.xcode }}
-    - run: swift test --parallel -Xswiftc -warnings-as-errors
+        xcode: ${{ matrix.xcode }}
+        warnings-as-errors: true
+      continue-on-error: ${{ matrix.xcode == '^12.5' || matrix.xcode == '10.3' }}
+      # ^^ 12.5 not yet available, 10.3 fails mysteriously
     - run: |
         swift test --generate-linuxmain
         git diff --exit-code
