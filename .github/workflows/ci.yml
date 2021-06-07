@@ -11,24 +11,23 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        xcode:
-        -  10.3  # Swift 5.0
-        -  11.3  # Swift 5.1
-        - ^11.4  # Swift 5.2
-        -  12.4  # Swift 5.3
-        - ^12.5  # Swift 5.4
+        swift:
+        - ~5.0
+        - ~5.1
+        - ~5.2
+        - ~5.3
+        - ~5.4
     steps:
     - uses: actions/checkout@v2
     - uses: mxcl/xcodebuild@v1
       with:
-        xcode: ${{ matrix.xcode }}
+        swift: ${{ matrix.swift }}
         warnings-as-errors: true
-      continue-on-error: ${{ matrix.xcode == '^12.5' || matrix.xcode == '10.3' }}
-      # ^^ 12.5 not yet available, 10.3 fails mysteriously
+      continue-on-error: ${{ matrix.swift == '~5.4' }}
     - run: |
         swift test --generate-linuxmain
         git diff --exit-code
-      if: ${{ matrix.xcode == '12.4' }}
+      if: ${{ matrix.swift == '~5.3' }}
   linux:
     runs-on: ubuntu-latest
     strategy:
