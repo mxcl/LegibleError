@@ -24,7 +24,7 @@ class ClassTests: XCTestCase {
 
         let foo = Foo()
 
-    #if os(macOS) && swift(>=5.1)
+    #if os(macOS) && swift(>=5.0)
         XCTAssertMatches(
             foo.legibleDescription,
             "^LegibleErrorTests\\.ClassTests\\.\\(unknown context at \\$.+\\)\\.\\(unknown context at \\$.+\\)\\.Foo\\(1\\)$")
@@ -41,7 +41,7 @@ class ClassTests: XCTestCase {
         let foo = PublicFoo()
 
     #if os(macOS)
-      #if swift(>=5.1)
+      #if swift(>=5.0)
         XCTAssertEqual(foo.legibleDescription, "LegibleErrorTests.PublicFoo(1)")
         XCTAssertEqual(foo.legibleLocalizedDescription, "\(theOperationCouldNotBeCompleted) (LegibleErrorTests.PublicFoo.1)")
       #else
@@ -59,7 +59,7 @@ class ClassTests: XCTestCase {
         let foo = InternalFoo()
 
     #if os(macOS)
-      #if swift(>=5.1)
+      #if swift(>=5.0)
         XCTAssertEqual(foo.legibleDescription, "LegibleErrorTests.InternalFoo(1)")
         XCTAssertEqual(foo.legibleLocalizedDescription, "\(theOperationCouldNotBeCompleted) (LegibleErrorTests.InternalFoo.1)")
       #else
@@ -76,7 +76,7 @@ class ClassTests: XCTestCase {
         let foo = PrivateFoo()
 
     #if os(macOS)
-      #if swift(>=5.1)
+      #if swift(>=5.0)
         XCTAssertEqual(foo.legibleDescription, "LegibleErrorTests.PrivateFoo(1)")
         XCTAssertEqual(foo.legibleLocalizedDescription, "\(theOperationCouldNotBeCompleted) (LegibleErrorTests.PrivateFoo.1)")
       #else
