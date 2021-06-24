@@ -8,40 +8,45 @@ on:
     - cron: '3 3 * * 2'  # 3:03 AM, every Tuesday
 jobs:
   macOS:
-    runs-on: macos-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        xcode:
-        -  10.3  # Swift 5.0
-        -  11.3  # Swift 5.1
-        - ^11.4  # Swift 5.2
-        -  12.4  # Swift 5.3
-        - ^12.5  # Swift 5.4
+        swift:
+        - ~5.0
+        - ~5.1
+        - ~5.2
+        - ~5.3
+        os:
+        - macos-10.15
+        include:
+        - swift: 5.4
+          os: macos-11
+        - swift: 5.5
+          os: macos-11
     steps:
     - uses: actions/checkout@v2
     - uses: mxcl/xcodebuild@v1
       with:
-        xcode: ${{ matrix.xcode }}
+        swift: ${{ matrix.swift }}
         warnings-as-errors: true
-      continue-on-error: ${{ matrix.xcode == '^12.5' || matrix.xcode == '10.3' }}
-      # ^^ 12.5 not yet available, 10.3 fails mysteriously
     - run: |
         swift test --generate-linuxmain
         git diff --exit-code
-      if: ${{ matrix.xcode == '12.4' }}
+      if: ${{ matrix.swift == '5.3' }}
   linux:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         swift:
-        - '4.2'
-        - '5.0'
-        - '5.1'
-        - '5.2'
-        - '5.3'
-        - '5.4'
+        - swift:4.2
+        - swift:5.0
+        - swift:5.1
+        - swift:5.2
+        - swift:5.3
+        - swift:5.4
+        - swiftlang/swift:nightly-5.5
     container:
-      image: swift:${{ matrix.swift }}
+      image: ${{ matrix.swift }}
     steps:
     - uses: actions/checkout@v2
     - run: swift test --parallel -Xswiftc -warnings-as-errors
